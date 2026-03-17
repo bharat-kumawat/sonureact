@@ -11,7 +11,6 @@ import { Outlet } from 'react-router-dom';
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch()
-  console.log("oye error kithe hai");
 
 
   useEffect(() => {
@@ -25,7 +24,6 @@ function App() {
       })
       .finally(() => setLoading(false))
   }, [])
-  console.log("oye error kithe hai");
 
   return !loading ? (<div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
     <div className='w-full block'>

@@ -16,13 +16,14 @@ function PostForm({ post }) {
     },
   })
 
-  const navigate = useNavigate()
-  const userData = useSelector(state => state.user.userData)
+  const navigate = useNavigate();
+  const userData = useSelector((state) => state.auth.userData);
 
 
   const submit = async (data) => {
+    console.log("button clicked");
     if (post) {
-      const file = dataimage[0] ? appwriteService.uploadFile(data.image[0]) : null
+      const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
 
       if (file) {
         appwriteService.deleteFile(post.featuredImage)
@@ -44,7 +45,7 @@ function PostForm({ post }) {
         data.featuredImage = fileId
         const dbPost = await appwriteService.createPost({
           ...data,
-          userId: userData.$id,
+          userId: userData.$id
         })
         if (dbPost) {
           navigate(`/post/${dbPost.$id}`)
@@ -62,18 +63,18 @@ function PostForm({ post }) {
 
   React.useEffect(() => {
     const subscription = watch((value, name) => {
-      if (name === title) {
+      if (name === "title") {
         setValue('slug', slugTransform(value.title, { shouldValidate: true }))
       }
     })
 
     return () => {
-      subscription.unsubscribe()
+      subscription.unsubscribe();
     }
   }, [watch, slugTransform, setValue])
 
   return (
-    <form onSubmit={handleSubmit(submit)} className='flex flex-wrap'>
+    <form onSubmit={() => handleSubmit(submit)} className='flex flex-wrap'>
       <div className='w-2/3 px-2'>
         <Input
           label="Title :"
@@ -94,12 +95,12 @@ function PostForm({ post }) {
             })
           }}
         />
-
+{/* 
         <RTE label="Content :" name="content"
-          control={control} defaultValue={getValues(content)}
-        />
+          control={control} defaultValue={getValues("content")} 
+         /> */}
       </div>
-      <div className='w=1/3 px-2'>
+      <div className='w-1/3 px-2'>
         <Input
           label="Featured Image :"
           type="file"
@@ -117,7 +118,7 @@ function PostForm({ post }) {
         <Select
           options={["active", "inactive"]}
           label="Status"
-          className="mb-4"
+          className="mb-100"
           {...register("status", { required: true })}
         />
         <Button type="submit" bgColor={post ? "bg-green-500" : undefined}
